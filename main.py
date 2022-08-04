@@ -9,7 +9,7 @@ from selenium.webdriver.support.select import Select
 # TODO prisukti pytest
 
 driver = driver_service()
-driver.get('chrome://settings/clearBrowserData')
+# driver.get('chrome://settings/clearBrowserData')
 City = 'Vilnius'
 
 
@@ -49,8 +49,9 @@ def open_new_tab():
 
 def goto_gmail_web():
     driver.get(
-        'https://accounts.google.com/signin/v2/identifier?continue=https%3A%2F%2Fmail.google.com%2Fmail%2F&service'
-        '=mail&sacu=1&rip=1&flowName=GlifWebSignIn&flowEntry=ServiceLogin')
+        'https://accounts.google.com/ServiceLogin/identifier?service=mail&passive=1209600&osid=1&continue=https%3A%2F'
+        '%2Fmail.google.com%2Fmail%2Fu%2F0%2F&followup=https%3A%2F%2Fmail.google.com%2Fmail%2Fu%2F0%2F&emr=1&flowName'
+        '=GlifWebSignIn&flowEntry=ServiceLogin')
 
 
 def input_login_name(login_name: str):
@@ -62,7 +63,7 @@ def input_login_name(login_name: str):
 
 def input_login_password(login_password: str):
     WebDriverWait(driver, 15).until(
-        EC.presence_of_element_located(
+        EC.element_to_be_clickable(
             (By.XPATH, '//*[@id="password"]/div[1]/div/div[1]/input'))
     ).send_keys(login_password)
     driver.find_element(By.XPATH, '//*[@id="passwordNext"]').click()
@@ -70,36 +71,32 @@ def input_login_password(login_password: str):
 
 def create_letter():
     WebDriverWait(driver, 15).until(
-        EC.presence_of_element_located(
-            (By.XPATH, '/html/body/div[7]/div[3]/div/div[2]/div[1]/div[1]/div[1]/div/div/div/div[1]/div/div'))
+        EC.element_to_be_clickable(
+            (By.XPATH, '/html/body/div[7]/div[3]/div/div[2]/div[1]/div[1]/div/div'))
     ).click()
 
 
 def input_sender_email(sender_mail: str):
-    driver.implicitly_wait(15)
-    sender_address = driver.find_element(By.XPATH,
-                                         '/html/body/div[20]/div/div/div/div[1]/div[3]/div[1]/div[1]/div/div/div/div['
-                                         '3]/div/div/div[4]/table/tbody/tr/td[2]/form/div[1]/table/tbody/tr[1]/td['
-                                         '2]/div/div/textarea')
-    ActionChains(driver).click(sender_address).send_keys(sender_mail + Keys.ENTER).perform()
+    sender_address = WebDriverWait(driver, 15).until(
+        EC.element_to_be_clickable(
+            (By.CLASS_NAME, 'eV'))
+    )
+    ActionChains(driver).click(sender_address).send_keys(sender_mail).perform()
+    ActionChains(driver).click(sender_address).send_keys(Keys.ENTER).perform()
 
 
 def input_letter(address_and_price: str):
     mail_content = WebDriverWait(driver, 15).until(
-        EC.presence_of_element_located((By.XPATH,
-                                        '/html/body/div[20]/div/div/div/div[1]/div[3]/div[1]/div[1]/div/div/div/div['
-                                        '3]/div/div/div[4]/table/tbody/tr/td[2]/table/tbody/tr[1]/td/div/div[1]/div['
-                                        '2]/div[1]/div/table/tbody/tr/td[2]'))
+        EC.element_to_be_clickable((By.CSS_SELECTOR,
+                                    "div[aria-label='Pranešimo turinys']"))
     )
     ActionChains(driver).move_to_element(mail_content).click(mail_content).send_keys(address_and_price).perform()
 
 
 def send_email():
     button = WebDriverWait(driver, 15).until(
-        EC.presence_of_element_located((By.XPATH,
-                                        '/html/body/div[20]/div/div/div/div[1]/div[3]/div[1]/div[1]/div/div/div/div['
-                                        '3]/div/div/div[4]/table/tbody/tr/td[2]/table/tbody/tr[2]/td/div/div/div['
-                                        '4]/table/tbody/tr/td[1]/div/div[2]'))
+        EC.element_to_be_clickable((By.XPATH,
+                                    "//div[@aria-label='Siųsti ‪(Ctrl –Enter)‬']"))
     )
     ActionChains(driver).move_to_element(button).click().perform()
 
