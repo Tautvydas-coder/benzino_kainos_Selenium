@@ -8,11 +8,14 @@ from resources.variables import *
 from resources import mail_credentials
 
 driver = driver_service()
+
+
 # driver.get('chrome://settings/clearBrowserData')
 
 def open_website():
     driver.implicitly_wait(5)
     driver.get(GAS_PRICE_URL)
+    driver.maximize_window()
 
 
 def choose_city():
@@ -81,14 +84,14 @@ def input_sender_email(sender_mail: str):
 
 def input_letter(address_and_price: str):
     mail_content = WebDriverWait(driver, 15).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR,EMAIL_TEXT_FIELD))
+        EC.element_to_be_clickable((By.CSS_SELECTOR, EMAIL_TEXT_FIELD))
     )
     ActionChains(driver).move_to_element(mail_content).click(mail_content).send_keys(address_and_price).perform()
 
 
 def send_email():
     button = WebDriverWait(driver, 15).until(
-        EC.element_to_be_clickable((By.XPATH,GMAIL_SEND_BUTTON))
+        EC.element_to_be_clickable((By.XPATH, GMAIL_SEND_BUTTON))
     )
     ActionChains(driver).move_to_element(button).click().perform()
 
