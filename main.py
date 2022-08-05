@@ -6,8 +6,6 @@ import mail_credentials
 from webdriver_service import driver_service
 from selenium.webdriver.support.select import Select
 
-# TODO prisukti pytest
-
 driver = driver_service()
 # driver.get('chrome://settings/clearBrowserData')
 City = 'Vilnius'
