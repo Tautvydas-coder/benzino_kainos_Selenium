@@ -4,7 +4,7 @@ GMAIL_LOGIN_URL = "https://accounts.google.com/ServiceLogin/identifier?service=m
 
 # Account info
 GMAIL_NAME = "work.selenium@gmail.com"
-GMAIL_PASSWORD = "Selenium1]"
+GMAIL_PASSWORD = "S*********]"
 
 # Drivers
 CHROME_DRIVER_PATH = "chromedriver"
